@@ -1,0 +1,65 @@
+package es.qc;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * JUnit test class for {@link GrafoPropriedades}.
+ * <p>
+ * Author: jxbarbosax
+ * Date: 2023-10-10
+ * </p>
+ * <p>
+ * Cyclomatic Complexity (CC) for each method:
+ * <ul>
+ *     <li>Constructor: CC = 1</li>
+ *     <li>adicionarPropriedade: CC = 1</li>
+ *     <li>construirGrafoAutomaticamente: CC = 2</li>
+ *     <li>mostrarGrafo: CC = 1</li>
+ * </ul>
+ */
+class GrafoPropriedadesTest {
+
+    @Test
+    void constructor() {
+        // Test that the GrafoPropriedades object is created successfully
+        assertDoesNotThrow(() -> new GrafoPropriedades(), "The constructor should not throw any exceptions.");
+    }
+
+    @Test
+    void adicionarPropriedade() {
+        // Test that a property is added correctly
+        GrafoPropriedades grafo = new GrafoPropriedades();
+        Propriedade propriedade = new Propriedade("1", "001", 100.0, 200.0, "POINT(0 0)", null, "Owner", "Parish", "Municipality", "Island");
+        grafo.adicionarPropriedade(propriedade);
+        assertTrue(grafo.getPropriedades().containsKey("1"), "The property should be added to the graph.");
+    }
+
+    @Test
+    void construirGrafoAutomaticamente() {
+        // Test that the graph is built automatically based on property intersections
+        GrafoPropriedades grafo = new GrafoPropriedades();
+        Propriedade propriedade1 = new Propriedade("1", "001", 100.0, 200.0, "POINT(0 0)", null, "Owner", "Parish", "Municipality", "Island");
+        Propriedade propriedade2 = new Propriedade("2", "002", 150.0, 250.0, "POINT(1 1)", null, "Owner2", "Parish2", "Municipality2", "Island2");
+        grafo.adicionarPropriedade(propriedade1);
+        grafo.adicionarPropriedade(propriedade2);
+
+        grafo.construirGrafoAutomaticamente();
+
+        assertTrue(propriedade1.getVizinhos().contains("2"), "Property 1 should have Property 2 as a neighbor.");
+        assertTrue(propriedade2.getVizinhos().contains("1"), "Property 2 should have Property 1 as a neighbor.");
+    }
+
+    @Test
+    void mostrarGrafo() {
+        // Test that the graph is displayed without errors
+        GrafoPropriedades grafo = new GrafoPropriedades();
+        Propriedade propriedade1 = new Propriedade("1", "001", 100.0, 200.0, "POINT(0 0)", null, "Owner", "Parish", "Municipality", "Island");
+        Propriedade propriedade2 = new Propriedade("2", "002", 150.0, 250.0, "POINT(1 1)", null, "Owner2", "Parish2", "Municipality2", "Island2");
+        grafo.adicionarPropriedade(propriedade1);
+        grafo.adicionarPropriedade(propriedade2);
+
+        assertDoesNotThrow(grafo::mostrarGrafo, "The graph should be displayed without throwing exceptions.");
+    }
+}

@@ -9,6 +9,33 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The {@code CSVLoader} class is responsible for loading and processing CSV files
+ * to extract property data and convert it into a usable format.
+ * <p>
+ * This class provides methods to load properties from a CSV file and return them
+ * as a map of property identifiers to {@link Propriedade} objects.
+ * </p>
+ *
+ * <p><strong>Usage:</strong></p>
+ * <pre>
+ * {@code
+ * Map<String, Propriedade> propriedades = CSVLoader.carregarPropriedades("file.csv");
+ * }
+ * </pre>
+ *
+ * <p><strong>Dependencies:</strong></p>
+ * This class depends on the following:
+ * <ul>
+ *   <li>{@link Propriedade} - Represents individual property data.</li>
+ *   <li>External libraries for CSV parsing (if applicable).</li>
+ * </ul>
+ *
+ * @author jxbarbosax
+ * @version 1.0
+ * @since 2023-10-10
+ */
+
 public class CSVLoader {
 
     public static Map<String, Propriedade> carregarPropriedades(String caminhoCSV) {
