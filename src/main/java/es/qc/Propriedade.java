@@ -52,6 +52,6 @@ public class Propriedade {
 
     @Override
     public String toString() {
-        return "Parcela " + parId + " (" + municipio + " - " + freguesia + ") com vizinhos: " + vizinhos;
+        return "Parcela " + parId + " (" + municipio + " - " + freguesia  + " - " + ilha + ") com vizinhos: " + vizinhos;
     }
 }

@@ -45,7 +45,6 @@ public class CSVLoader {
             e.printStackTrace();
         }
 
-        System.out.println(propriedades.toString());
         return propriedades;
     }
 }
