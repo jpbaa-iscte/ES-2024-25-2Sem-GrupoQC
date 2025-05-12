@@ -1,11 +1,13 @@
 package es.qc;
 
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.geom.GeometryFactory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +40,7 @@ import java.util.Map;
 
 public class CSVLoader {
 
-    public static Map<String, Propriedade> carregarPropriedades(String caminhoCSV) {
+    public static Map<String, Propriedade> carregarPropriedades(String caminhoCSV) throws IOException, ParseException {
         Map<String, Propriedade> propriedades = new HashMap<>();
         GeometryFactory geometryFactory = new GeometryFactory();
         WKTReader reader = new WKTReader(geometryFactory);
@@ -67,11 +69,9 @@ public class CSVLoader {
                         freguesia, municipio, ilha);
                 propriedades.put(parId, prop);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return propriedades;
     }
+
 }
