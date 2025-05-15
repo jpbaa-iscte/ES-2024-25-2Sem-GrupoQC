@@ -86,6 +86,10 @@ public class Propriedade {
         return vizinhos;
     }
 
+    public String getOwner(){
+        return owner;
+    }
+
     @Override
     public String toString() {
         return "Parcela " + parId + " (" + municipio + " - " + freguesia  + " - " + ilha + ") com vizinhos: " + vizinhos;
