@@ -1,37 +1,74 @@
 package es.qc;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.SingleGraph;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.locationtech.jts.geom.Coordinate;
 
 public class VisualizadorGrafoPropriedades {
+    public static void mostrar(GrafoPropriedades grafo) {
+        Graph graph = new SingleGraph("Mapa Cadastral");
 
-    public static void mostrar(GrafoPropriedades grafoPropriedades) {
-        Graph graph = new SingleGraph("Grafo de Propriedades");
+        graph.setStrict(false);
+        graph.setAutoCreate(true);
 
-        // Adiciona nós
-        for (Propriedade prop : grafoPropriedades.getPropriedades().values()) {
-            graph.addNode(prop.getParId()).setAttribute("ui.label", prop.getParId());
+        // Calcula bounding box para normalização
+        double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
+        double maxX = -Double.MAX_VALUE, maxY = -Double.MAX_VALUE;
+
+        for (Propriedade p : grafo.getPropriedades().values()) {
+            Coordinate c = p.getCentroide();
+            if (c == null) continue;
+            if (c.x < minX) minX = c.x;
+            if (c.y < minY) minY = c.y;
+            if (c.x > maxX) maxX = c.x;
+            if (c.y > maxY) maxY = c.y;
         }
 
-        // Adiciona arestas (bidirecionais mas sem duplicação)
-        Set<String> arestasAdicionadas = new HashSet<>();
-        for (Propriedade prop : grafoPropriedades.getPropriedades().values()) {
-            for (String vizinhoId : prop.getVizinhos()) {
-                String id1 = prop.getParId();
-                String id2 = vizinhoId;
-                String arestaId = id1.compareTo(id2) < 0 ? id1 + "-" + id2 : id2 + "-" + id1;
+        double scaleX = 1000.0 / (maxX - minX);
+        double scaleY = 1000.0 / (maxY - minY);
 
-                if (!arestasAdicionadas.contains(arestaId)) {
-                    graph.addEdge(arestaId, id1, id2);
-                    arestasAdicionadas.add(arestaId);
+        // Adiciona nós com coordenadas normalizadas
+        for (Propriedade p : grafo.getPropriedades().values()) {
+            Coordinate c = p.getCentroide();
+            if (c == null) continue;
+
+            String id = p.getParId();
+            Node node = graph.addNode(id);
+
+            double x = (c.x - minX) * scaleX;
+            double y = (c.y - minY) * scaleY;
+
+            node.setAttribute("xy", x, y);
+            node.setAttribute("ui.label", id);
+        }
+
+        // Adiciona arestas (linhas entre parcelas vizinhas), evitando duplicadas
+        for (Propriedade p : grafo.getPropriedades().values()) {
+            for (String vizinhoId : p.getVizinhos()) {
+                String id1 = p.getParId();
+                String id2 = vizinhoId;
+                String edgeId = id1 + "-" + id2;
+
+                if (graph.getEdge(edgeId) == null && graph.getEdge(id2 + "-" + id1) == null) {
+                    graph.addEdge(edgeId, id1, id2);
                 }
             }
         }
 
-        graph.setAttribute("ui.stylesheet", "node { fill-color: blue; }");
+        // Estilo dos nós e arestas
+        graph.setAttribute("ui.stylesheet",
+                "node {" +
+                        "size: 8px;" +
+                        "fill-color: blue;" +
+                        "text-size: 12;" +
+                        "text-alignment: above;" +
+                        "}" +
+                        "edge {" +
+                        "fill-color: gray;" +
+                        "}"
+        );
+
         graph.display();
     }
 }
-

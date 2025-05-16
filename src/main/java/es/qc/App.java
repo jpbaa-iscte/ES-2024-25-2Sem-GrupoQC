@@ -1,8 +1,7 @@
 package es.qc;
 
-import org.locationtech.jts.io.ParseException;
-
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Map;
 
 public class App {
@@ -24,15 +23,15 @@ public class App {
             System.out.println("=== Grafo de Propriedades ===");
             grafoPropriedades.mostrarGrafo();
 
-            // 3. Constrói o grafo de proprietários com base nas relações anteriores
+            // 3. Constrói o grafo de proprietários com base nas relações entre parcelas
             GrafoProprietarios grafoProprietarios = new GrafoProprietarios(grafoPropriedades);
 
             System.out.println("\n=== Grafo de Proprietários ===");
             grafoProprietarios.mostrarGrafo();
 
-            // 4. Visualização gráfica com GraphStream
+            // 4. Visualizações gráficas com GraphStream
             VisualizadorGrafoPropriedades.mostrar(grafoPropriedades);
-            VisualizadorGrafoProprietarios.mostrar(grafoProprietarios);
+            VisualizadorGrafoProprietarios.mostrar(grafoProprietarios,grafoPropriedades);
 
         } catch (IOException | ParseException e) {
             System.err.println("Erro ao carregar o CSV ou construir os grafos: " + e.getMessage());
