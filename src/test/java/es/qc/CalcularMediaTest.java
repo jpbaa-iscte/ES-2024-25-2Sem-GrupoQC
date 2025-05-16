@@ -32,7 +32,7 @@ public class CalcularMediaTest {
     public void testAreaMediaSimples() {
         Map<String, Propriedade> propriedades = criarPropriedadesSimples();
 
-        double media = CalcularMedia.calcularAreaMedia(propriedades, "municipio", "Funchal");
+        double media = CalcularMedia.calcularAreaMediaPorLocalizacao(propriedades, "Funchal", "municipio");
 
         // (200 + 300 + 500) / 3 = 1000 / 3 ≈ 333.33
         assertEquals(333.33, media, 0.01);
@@ -42,7 +42,7 @@ public class CalcularMediaTest {
     public void testAreaMediaAgrupada() {
         Map<String, Propriedade> propriedades = criarPropriedadesSimples();
 
-        double media = CalcularMedia.calcularAreaMediaAgrupada(propriedades, "municipio", "Funchal");
+        double media = CalcularMedia.calcularAreaMediaAgrupada(propriedades, "Funchal", "municipio");
 
         // p1 e p2 são do mesmo dono e vizinhos → 200 + 300 = 500
         // p3 é separado → 500
@@ -54,7 +54,7 @@ public class CalcularMediaTest {
     public void testAreaMediaSemResultados() {
         Map<String, Propriedade> propriedades = criarPropriedadesSimples();
 
-        double media = CalcularMedia.calcularAreaMedia(propriedades, "municipio", "Lisboa");
+        double media = CalcularMedia.calcularAreaMediaPorLocalizacao(propriedades, "Lisboa", "municipio");
         assertEquals(0.0, media);
     }
 
@@ -62,7 +62,7 @@ public class CalcularMediaTest {
     public void testAreaMediaAgrupadaSemResultados() {
         Map<String, Propriedade> propriedades = criarPropriedadesSimples();
 
-        double media = CalcularMedia.calcularAreaMediaAgrupada(propriedades, "ilha", "Continente");
+        double media = CalcularMedia.calcularAreaMediaAgrupada(propriedades, "Continente", "ilha");
         assertEquals(0.0, media);
     }
 }

@@ -55,7 +55,7 @@ public class App {
                 String localizacao = scanner.nextLine().trim();
 
                 if (opcao.equals("1")) {
-                    double media = grafoPropriedades.calcularAreaMediaPorLocalizacao(localizacao, tipo);
+                    double media = CalcularMedia.calcularAreaMediaPorLocalizacao(propriedades, localizacao, tipo);
                     System.out.printf("A área média das propriedades em %s (%s) é %.2f m²%n", localizacao, tipo, media);
                 } else if (opcao.equals("2")) {
                     double mediaAgrupada = CalcularMedia.calcularAreaMediaAgrupada(propriedades, tipo, localizacao);

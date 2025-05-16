@@ -38,27 +38,6 @@ public class GrafoPropriedades {
         }
     }
 
-    public double calcularAreaMediaPorLocalizacao(String localizacao, String tipo) {
-        double soma = 0;
-        int contador = 0;
-
-        for (Propriedade p : propriedades.values()) {
-            boolean corresponde = switch (tipo.toLowerCase()) {
-                case "freguesia" -> p.getFreguesia().equalsIgnoreCase(localizacao);
-                case "municipio" -> p.getMunicipio().equalsIgnoreCase(localizacao);
-                case "ilha" -> p.getIlha().equalsIgnoreCase(localizacao);
-                default -> false;
-            };
-
-            if (corresponde) {
-                soma += p.getArea();
-                contador++;
-            }
-        }
-
-        return contador > 0 ? soma / contador : 0;
-    }
-
     public void mostrarGrafo() {
         for (Propriedade prop : propriedades.values()) {
             System.out.println(prop);
