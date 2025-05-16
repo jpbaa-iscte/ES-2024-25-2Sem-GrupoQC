@@ -86,9 +86,26 @@ public class Propriedade {
         return vizinhos;
     }
 
+    public double getArea() {
+        return area;
+    }
+
+    public String getFreguesia() {
+        return freguesia;
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public String getIlha() {
+        return ilha;
+    }
+
     public String getOwner(){
         return owner;
     }
+
 
     @Override
     public String toString() {
