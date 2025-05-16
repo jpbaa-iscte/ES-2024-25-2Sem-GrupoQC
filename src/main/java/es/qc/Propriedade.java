@@ -73,10 +73,6 @@ public class Propriedade {
         return ilha;
     }
 
-    public double getArea() {
-        return area;
-    }
-
 
     public String getGeometryWKT() {
         return geometryWKT;

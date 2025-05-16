@@ -37,22 +37,33 @@ public class App {
             Scanner scanner = new Scanner(System.in);
 
             while (true) {
-                System.out.print("Digite o tipo de localizacao (municipio, freguesia, ilha): ");
-                String tipo = scanner.nextLine().trim();
-                System.out.print("Digite o nome da localizacao: ");
-                String localizacao = scanner.nextLine().trim();
+                System.out.println("\nEscolha uma opção:");
+                System.out.println("1 - Calcular área média simples por região (Ponto 4)");
+                System.out.println("2 - Calcular área média agrupada por região (Ponto 5)");
+                System.out.println("0 - Sair");
+                System.out.print("Opção: ");
+                String opcao = scanner.nextLine().trim();
 
-                double media = grafoPropriedades.calcularAreaMediaPorLocalizacao(localizacao, tipo);
-                System.out.printf("A área média das propriedades em %s (%s) é %.2f m²%n%n", localizacao, tipo, media);
-
-                System.out.print("Deseja fazer outra consulta? (s/n): ");
-                String resposta = scanner.nextLine().trim().toLowerCase();
-                if (!resposta.equals("s")) {
+                if (opcao.equals("0")) {
                     System.out.println("Encerrando.");
                     break;
                 }
-            }
 
+                System.out.print("Digite o tipo de localização (municipio, freguesia, ilha): ");
+                String tipo = scanner.nextLine().trim();
+                System.out.print("Digite o nome da localização: ");
+                String localizacao = scanner.nextLine().trim();
+
+                if (opcao.equals("1")) {
+                    double media = grafoPropriedades.calcularAreaMediaPorLocalizacao(localizacao, tipo);
+                    System.out.printf("A área média das propriedades em %s (%s) é %.2f m²%n", localizacao, tipo, media);
+                } else if (opcao.equals("2")) {
+                    double mediaAgrupada = CalcularMedia.calcularAreaMediaAgrupada(propriedades, tipo, localizacao);
+                    System.out.printf("A área média AGRUPADA (propriedades adjacentes do mesmo dono) em %s (%s) é %.2f m²%n", localizacao, tipo, mediaAgrupada);
+                } else {
+                    System.out.println("Opção inválida.");
+                }
+            }
 
         } catch (IOException | ParseException e) {
             System.err.println("Erro ao carregar o CSV ou construir os grafos: " + e.getMessage());
