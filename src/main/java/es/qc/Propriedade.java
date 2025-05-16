@@ -54,6 +54,10 @@ public class Propriedade {
         return owner;
     }
 
+    public double getArea() {
+        return area;
+    }
+
     public String getFreguesia() {
         return freguesia;
     }
