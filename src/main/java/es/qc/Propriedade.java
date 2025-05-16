@@ -29,7 +29,7 @@ public class Propriedade {
         this.area = area;
         this.geometryWKT = geometryWKT;
         this.geometry = geometry;
-        this.centroide = geometry.getCentroid().getCoordinate();
+        this.centroide = geometry != null ? geometry.getCentroid().getCoordinate() : null;
         this.owner = owner;
         this.freguesia = freguesia;
         this.municipio = municipio;
