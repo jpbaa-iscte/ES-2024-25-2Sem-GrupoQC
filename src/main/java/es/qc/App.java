@@ -5,39 +5,34 @@ import org.locationtech.jts.io.ParseException;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * Hello world!
- *
- */
 public class App {
     public static void main(String[] args) {
+        // Caminho do ficheiro CSV
         String caminhoCSV = "Madeira-Moodle-1.1.csv/Madeira-Moodle-1.1.csv";
 
         try {
-            // Carrega as propriedades a partir do CSV
+            // 1. Carrega as propriedades a partir do CSV
             Map<String, Propriedade> propriedades = CSVLoader.carregarPropriedades(caminhoCSV);
 
-            // Cria e constrói o grafo de propriedades
+            // 2. Constrói o grafo de propriedades (parcelas)
             GrafoPropriedades grafoPropriedades = new GrafoPropriedades();
             for (Propriedade prop : propriedades.values()) {
                 grafoPropriedades.adicionarPropriedade(prop);
             }
-
             grafoPropriedades.construirGrafoAutomaticamente();
 
             System.out.println("=== Grafo de Propriedades ===");
             grafoPropriedades.mostrarGrafo();
 
-            // Cria e mostra o grafo de proprietários (baseado no grafo anterior)
+            // 3. Constrói o grafo de proprietários com base nas relações anteriores
             GrafoProprietarios grafoProprietarios = new GrafoProprietarios(grafoPropriedades);
 
             System.out.println("\n=== Grafo de Proprietários ===");
             grafoProprietarios.mostrarGrafo();
 
-            // Mostrar graficamente os dois grafos
-            VisualizadorGrafo.mostrarGrafoDeProprietarios(grafoProprietarios);
-            VisualizadorGrafo.mostrarGrafoDePropriedades(grafoPropriedades);
-
+            // 4. Visualização gráfica com GraphStream
+            VisualizadorGrafoPropriedades.mostrar(grafoPropriedades);
+            VisualizadorGrafoProprietarios.mostrar(grafoProprietarios);
 
         } catch (IOException | ParseException e) {
             System.err.println("Erro ao carregar o CSV ou construir os grafos: " + e.getMessage());

@@ -1,58 +1,22 @@
 package es.qc;
 
 import org.locationtech.jts.geom.Geometry;
-
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-/**
- * The {@code Propriedade} class represents a property with various attributes such as
- * identifier, geometry, owner, and neighboring properties.
- * <p>
- * This class provides methods to access property details, manage neighbors, and
- * represent the property as a string.
- * </p>
- *
- * <p><strong>Attributes:</strong></p>
- * <ul>
- *   <li>{@code parId} - Unique identifier for the property.</li>
- *   <li>{@code parNum} - Parcel number of the property.</li>
- *   <li>{@code comprimento} - Length of the property boundary.</li>
- *   <li>{@code area} - Area of the property.</li>
- *   <li>{@code geometryWKT} - Geometry in WKT (Well-Known Text) format.</li>
- *   <li>{@code geometry} - Geometry object representing the property.</li>
- *   <li>{@code owner} - Owner of the property.</li>
- *   <li>{@code freguesia} - Parish where the property is located.</li>
- *   <li>{@code municipio} - Municipality where the property is located.</li>
- *   <li>{@code ilha} - Island where the property is located.</li>
- *   <li>{@code vizinhos} - Set of neighboring property identifiers.</li>
- * </ul>
- *
- * <p><strong>Usage:</strong></p>
- * <pre>
- * {@code
- * Propriedade propriedade = new Propriedade("1", "001", 100.0, 200.0, "POINT(0 0)", geometry, "Owner", "Parish", "Municipality", "Island");
- * propriedade.adicionarVizinho("2");
- * }
- * </pre>
- *
- * @author jxbarbosax
- * @version 1.0
- * @since 2023-10-10
- */
-
 public class Propriedade {
-    private String parId;
-    private String parNum;
-    private double comprimento;
-    private double area;
-    private String geometryWKT;
-    private Geometry geometry;
-    private String owner;
-    private String freguesia;
-    private String municipio;
-    private String ilha;
-    private Set<String> vizinhos;
+    private final String parId;
+    private final String parNum;
+    private final double comprimento;
+    private final double area;
+    private final String geometryWKT;
+    private final Geometry geometry;
+    private final String owner;
+    private final String freguesia;
+    private final String municipio;
+    private final String ilha;
+    private final Set<String> vizinhos;
 
     public Propriedade(String parId, String parNum, double comprimento, double area,
                        String geometryWKT, Geometry geometry, String owner,
@@ -86,12 +50,42 @@ public class Propriedade {
         return vizinhos;
     }
 
-    public String getOwner(){
+    public String getOwner() {
         return owner;
+    }
+
+    public String getFreguesia() {
+        return freguesia;
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public String getIlha() {
+        return ilha;
+    }
+
+    public String getGeometryWKT() {
+        return geometryWKT;
     }
 
     @Override
     public String toString() {
-        return "Parcela " + parId + " (" + municipio + " - " + freguesia  + " - " + ilha + ") com vizinhos: " + vizinhos;
+        return "Parcela " + parId + " (" + municipio + " - " + freguesia + " - " + ilha +
+                ") com vizinhos: " + vizinhos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Propriedade)) return false;
+        Propriedade that = (Propriedade) o;
+        return Objects.equals(parId, that.parId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(parId);
     }
 }

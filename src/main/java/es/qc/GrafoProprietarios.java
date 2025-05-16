@@ -1,12 +1,9 @@
 package es.qc;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class GrafoProprietarios {
-    private Map<String, Set<String>> grafo; // chave: proprietário, valor: conjunto de vizinhos
+    private final Map<String, Set<String>> grafo; // chave: proprietário, valor: conjunto de vizinhos
 
     public GrafoProprietarios(GrafoPropriedades grafoPropriedades) {
         this.grafo = new HashMap<>();
@@ -16,19 +13,21 @@ public class GrafoProprietarios {
     private void construirGrafoDeProprietarios(GrafoPropriedades grafoPropriedades) {
         Map<String, Propriedade> propriedades = grafoPropriedades.getPropriedades();
 
-        for (Propriedade prop : propriedades.values()) {
-            String proprietarioAtual = prop.getOwner();
-            grafo.putIfAbsent(proprietarioAtual, new HashSet<>());
+        for (Propriedade propriedade : propriedades.values()) {
+            String proprietarioOrigem = propriedade.getOwner();
+            grafo.putIfAbsent(proprietarioOrigem, new HashSet<>());
 
-            for (String vizinhoId : prop.getVizinhos()) {
+            for (String vizinhoId : propriedade.getVizinhos()) {
                 Propriedade vizinha = propriedades.get(vizinhoId);
+                if (vizinha == null) continue; // segurança extra
+
                 String proprietarioVizinho = vizinha.getOwner();
 
-                // Só adiciona se forem proprietários diferentes
-                if (!proprietarioAtual.equals(proprietarioVizinho)) {
-                    grafo.get(proprietarioAtual).add(proprietarioVizinho);
+                // Adiciona ligação apenas se forem donos diferentes
+                if (!proprietarioOrigem.equals(proprietarioVizinho)) {
+                    grafo.get(proprietarioOrigem).add(proprietarioVizinho);
                     grafo.putIfAbsent(proprietarioVizinho, new HashSet<>());
-                    grafo.get(proprietarioVizinho).add(proprietarioAtual);
+                    grafo.get(proprietarioVizinho).add(proprietarioOrigem);
                 }
             }
         }
@@ -39,8 +38,17 @@ public class GrafoProprietarios {
     }
 
     public void mostrarGrafo() {
-        for (Map.Entry<String, Set<String>> entry : grafo.entrySet()) {
-            System.out.println("Proprietário " + entry.getKey() + " é vizinho de: " + entry.getValue());
+        System.out.println("===== Grafo de Proprietários =====");
+        List<String> proprietariosOrdenados = new ArrayList<>(grafo.keySet());
+        Collections.sort(proprietariosOrdenados);
+
+        for (String proprietario : proprietariosOrdenados) {
+            Set<String> vizinhos = grafo.get(proprietario);
+            List<String> vizinhosOrdenados = new ArrayList<>(vizinhos);
+            Collections.sort(vizinhosOrdenados);
+
+            System.out.println("Proprietário: " + proprietario);
+            System.out.println("  ↳ Vizinhos: " + (vizinhosOrdenados.isEmpty() ? "Nenhum" : String.join(", ", vizinhosOrdenados)));
         }
     }
 }
