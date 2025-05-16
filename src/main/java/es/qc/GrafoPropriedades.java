@@ -29,7 +29,8 @@ public class GrafoPropriedades {
                 Propriedade p2 = lista.get(j);
                 Geometry g2 = p2.getGeometry();
 
-                if (g1.intersects(g2)) {
+                // Considera propriedades adjacentes pelas bordas (não sobrepostas)
+                if (g1.touches(g2)) {
                     p1.adicionarVizinho(p2.getParId());
                     p2.adicionarVizinho(p1.getParId());
                 }
@@ -64,3 +65,4 @@ public class GrafoPropriedades {
         }
     }
 }
+

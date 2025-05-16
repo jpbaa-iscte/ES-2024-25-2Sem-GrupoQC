@@ -1,5 +1,6 @@
 package es.qc;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,6 +18,7 @@ public class Propriedade {
     private final String municipio;
     private final String ilha;
     private final Set<String> vizinhos;
+    private final Coordinate centroide;
 
     public Propriedade(String parId, String parNum, double comprimento, double area,
                        String geometryWKT, Geometry geometry, String owner,
@@ -27,6 +29,7 @@ public class Propriedade {
         this.area = area;
         this.geometryWKT = geometryWKT;
         this.geometry = geometry;
+        this.centroide = geometry.getCentroid().getCoordinate();
         this.owner = owner;
         this.freguesia = freguesia;
         this.municipio = municipio;
@@ -54,6 +57,10 @@ public class Propriedade {
         return owner;
     }
 
+    public double getArea() {
+        return area;
+    }
+
     public String getFreguesia() {
         return freguesia;
     }
@@ -75,6 +82,10 @@ public class Propriedade {
         return geometryWKT;
     }
 
+    public Coordinate getCentroide() {
+        return centroide;
+    }
+
     @Override
     public String toString() {
         return "Parcela " + parId + " (" + municipio + " - " + freguesia + " - " + ilha +
@@ -94,3 +105,4 @@ public class Propriedade {
         return Objects.hash(parId);
     }
 }
+

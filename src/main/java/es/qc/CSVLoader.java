@@ -1,42 +1,15 @@
 package es.qc;
 
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.io.WKTReader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * The {@code CSVLoader} class is responsible for loading and processing CSV files
- * to extract property data and convert it into a usable format.
- * <p>
- * This class provides methods to load properties from a CSV file and return them
- * as a map of property identifiers to {@link Propriedade} objects.
- * </p>
- *
- * <p><strong>Usage:</strong></p>
- * <pre>
- * {@code
- * Map<String, Propriedade> propriedades = CSVLoader.carregarPropriedades("file.csv");
- * }
- * </pre>
- *
- * <p><strong>Dependencies:</strong></p>
- * This class depends on the following:
- * <ul>
- *   <li>{@link Propriedade} - Represents individual property data.</li>
- *   <li>External libraries for CSV parsing (if applicable).</li>
- * </ul>
- *
- * @author jxbarbosax
- * @version 1.0
- * @since 2023-10-10
- */
 
 public class CSVLoader {
 
@@ -46,7 +19,7 @@ public class CSVLoader {
         WKTReader reader = new WKTReader(geometryFactory);
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoCSV))) {
-            br.readLine(); // Cabeçalho
+            br.readLine(); // Pular cabeçalho
             String linha;
 
             while ((linha = br.readLine()) != null) {
@@ -55,15 +28,36 @@ public class CSVLoader {
 
                 String parId = partes[1].trim();
                 String parNum = partes[2].trim();
-                double comprimento = Double.parseDouble(partes[3].trim().replace(",", "."));
-                double area = Double.parseDouble(partes[4].trim().replace(",", "."));
+
+                double comprimento;
+                double area;
+                try {
+                    comprimento = Double.parseDouble(partes[3].trim().replace(",", "."));
+                    area = Double.parseDouble(partes[4].trim().replace(",", "."));
+                } catch (NumberFormatException e) {
+                    System.err.println("Número inválido na linha com parId " + parId + ", ignorando...");
+                    continue;
+                }
+
                 String geometryWKT = partes[5].trim();
                 String owner = partes[6].trim();
                 String freguesia = partes[7].trim();
                 String municipio = partes[8].trim();
                 String ilha = partes[9].trim();
 
-                Geometry geometry = reader.read(geometryWKT);
+                Geometry geometry;
+                try {
+                    geometry = reader.read(geometryWKT);
+
+                    if (geometry == null || geometry.isEmpty() || !geometry.isValid()) {
+                        System.err.println("Geometria inválida para parId " + parId + ", ignorando...");
+                        continue;
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erro ao ler geometria WKT para parId " + parId + ": " + e.getMessage());
+                    continue;
+                }
+
                 Propriedade prop = new Propriedade(parId, parNum, comprimento, area,
                         geometryWKT, geometry, owner,
                         freguesia, municipio, ilha);
@@ -73,5 +67,4 @@ public class CSVLoader {
 
         return propriedades;
     }
-
 }
