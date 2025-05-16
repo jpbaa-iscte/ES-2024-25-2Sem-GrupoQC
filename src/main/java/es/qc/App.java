@@ -30,15 +30,15 @@ public class App {
             System.out.println("\n=== Grafo de Proprietários ===");
             grafoProprietarios.mostrarGrafo();
 
-            // 4. Visualizações gráficas com GraphStream
             VisualizadorGrafoPropriedades.mostrar(grafoPropriedades);
             VisualizadorGrafoProprietarios.mostrar(grafoProprietarios,grafoPropriedades);
 
+            // 4. Permitir calcular a área média das propriedades
             Scanner scanner = new Scanner(System.in);
 
             while (true) {
                 System.out.println("\nEscolha uma opção:");
-                System.out.println("1 - Calcular área média simples por região (Ponto 4)");
+                System.out.println("1 - Calcular área média por região (Ponto 4)");
                 System.out.println("2 - Calcular área média agrupada por região (Ponto 5)");
                 System.out.println("0 - Sair");
                 System.out.print("Opção: ");

@@ -3,35 +3,6 @@ package es.qc;
 import java.util.*;
 
 public class CalcularMedia {
-
-    /**
-     * Calcula a área média das propriedades individuais numa região.
-     */
-    public static double calcularAreaMedia(Map<String, Propriedade> propriedades, String tipoArea, String nome) {
-        double somaAreas = 0.0;
-        int contador = 0;
-
-        for (Propriedade prop : propriedades.values()) {
-            String tipo = tipoArea.toLowerCase();
-
-            boolean corresponde = false;
-            if (tipo.equals("freguesia")) {
-                corresponde = prop.getFreguesia().equalsIgnoreCase(nome);
-            } else if (tipo.equals("municipio")) {
-                corresponde = prop.getMunicipio().equalsIgnoreCase(nome);
-            } else if (tipo.equals("ilha")) {
-                corresponde = prop.getIlha().equalsIgnoreCase(nome);
-            }
-
-            if (corresponde) {
-                somaAreas += prop.getArea();
-                contador++;
-            }
-        }
-
-        return (contador > 0) ? somaAreas / contador : 0.0;
-    }
-
     /**
      * Calcula a área média agrupando propriedades adjacentes do mesmo dono numa região.
      */
