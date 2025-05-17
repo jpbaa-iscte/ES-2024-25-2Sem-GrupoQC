@@ -37,6 +37,18 @@ public class Propriedade {
         this.vizinhos = new HashSet<>();
     }
 
+    public void setOwner(String novoDono) {
+        // usado apenas para simulação de trocas
+        try {
+            java.lang.reflect.Field f = Propriedade.class.getDeclaredField("owner");
+            f.setAccessible(true);
+            f.set(this, novoDono);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao definir novo dono: " + e.getMessage());
+        }
+    }
+
+
     public String getParId() {
         return parId;
     }

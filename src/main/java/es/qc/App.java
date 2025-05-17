@@ -2,6 +2,7 @@ package es.qc;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -40,6 +41,7 @@ public class App {
                 System.out.println("\nEscolha uma opção:");
                 System.out.println("1 - Calcular área média por região (Ponto 4)");
                 System.out.println("2 - Calcular área média agrupada por região (Ponto 5)");
+                System.out.println("3 - Sugerir trocas entre propriedades");
                 System.out.println("0 - Sair");
                 System.out.print("Opção: ");
                 String opcao = scanner.nextLine().trim();
@@ -60,6 +62,12 @@ public class App {
                 } else if (opcao.equals("2")) {
                     double mediaAgrupada = CalcularMedia.calcularAreaMediaAgrupada(propriedades, tipo, localizacao);
                     System.out.printf("A área média AGRUPADA (propriedades adjacentes do mesmo dono) em %s (%s) é %.2f m²%n", localizacao, tipo, mediaAgrupada);
+                } else if (opcao.equals("3")) {
+                    List<SugestaoTroca> sugestoes = GeradorSugestoesTroca.sugerirTrocas(propriedades);
+                    System.out.println("\n=== Sugestões de Trocas ===");
+                    for (int i = 0; i < Math.min(10, sugestoes.size()); i++) {
+                        System.out.println((i + 1) + ". " + sugestoes.get(i));
+                    }
                 } else {
                     System.out.println("Opção inválida.");
                 }
