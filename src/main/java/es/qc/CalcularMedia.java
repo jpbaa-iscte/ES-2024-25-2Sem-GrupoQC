@@ -28,64 +28,53 @@ public class CalcularMedia {
     /**
      * Calcula a área média agrupando propriedades adjacentes do mesmo dono numa região.
      */
-    public static double calcularAreaMediaAgrupada(Map<String, Propriedade> propriedades, String tipoArea, String nome) {
+    public static double calcularAreaMediaAgrupada(Map<String, Propriedade> propriedades, String tipoArea, String valorArea) {
         Set<String> visitados = new HashSet<>();
         List<Double> areasAgrupadas = new ArrayList<>();
 
         for (Propriedade prop : propriedades.values()) {
-            if (visitados.contains(prop.getParId())) continue;
+            // Filtrar pela área administrativa indicada
+            if (!correspondeAreaAdministrativa(prop, tipoArea, valorArea)) continue;
 
-            boolean corresponde = false;
-            String tipo = tipoArea.toLowerCase();
-            if (tipo.equals("freguesia")) {
-                corresponde = prop.getFreguesia().equalsIgnoreCase(nome);
-            } else if (tipo.equals("municipio")) {
-                corresponde = prop.getMunicipio().equalsIgnoreCase(nome);
-            } else if (tipo.equals("ilha")) {
-                corresponde = prop.getIlha().equalsIgnoreCase(nome);
-            }
+            if (!visitados.contains(prop.getParId())) {
+                // Iniciar DFS/BFS para agrupar propriedades do mesmo dono e adjacentes
+                double areaGrupo = 0.0;
+                Queue<Propriedade> fila = new LinkedList<>();
+                fila.add(prop);
+                visitados.add(prop.getParId());
 
-            if (!corresponde) continue;
+                while (!fila.isEmpty()) {
+                    Propriedade atual = fila.poll();
+                    areaGrupo += atual.getArea();
 
-            double areaGrupo = 0.0;
-            String dono = prop.getOwner();
-            Queue<Propriedade> fila = new LinkedList<>();
-            fila.add(prop);
-            visitados.add(prop.getParId());
+                    for (String vizinhoId : atual.getVizinhos()) {
+                        Propriedade vizinho = propriedades.get(vizinhoId);
+                        if (vizinho != null && !visitados.contains(vizinhoId)
+                                && vizinho.getOwner().equals(atual.getOwner())
+                                && correspondeAreaAdministrativa(vizinho, tipoArea, valorArea)) {
 
-            while (!fila.isEmpty()) {
-                Propriedade atual = fila.poll();
-                areaGrupo += atual.getArea();
-
-                for (String vizinhoId : atual.getVizinhos()) {
-                    Propriedade vizinho = propriedades.get(vizinhoId);
-                    if (vizinho != null && !visitados.contains(vizinhoId)
-                            && vizinho.getOwner().equals(dono)) {
-
-                        boolean vizinhoCorresponde = false;
-                        if (tipo.equals("freguesia")) {
-                            vizinhoCorresponde = vizinho.getFreguesia().equalsIgnoreCase(nome);
-                        } else if (tipo.equals("municipio")) {
-                            vizinhoCorresponde = vizinho.getMunicipio().equalsIgnoreCase(nome);
-                        } else if (tipo.equals("ilha")) {
-                            vizinhoCorresponde = vizinho.getIlha().equalsIgnoreCase(nome);
-                        }
-
-                        if (vizinhoCorresponde) {
                             fila.add(vizinho);
                             visitados.add(vizinhoId);
                         }
                     }
                 }
-            }
-
-            if (areaGrupo > 0) {
                 areasAgrupadas.add(areaGrupo);
             }
         }
 
-        double soma = 0.0;
-        for (double a : areasAgrupadas) soma += a;
-        return areasAgrupadas.isEmpty() ? 0.0 : soma / areasAgrupadas.size();
+        // Calcular média
+        return areasAgrupadas.isEmpty() ? 0.0 :
+                areasAgrupadas.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
     }
+
+    // Método auxiliar para verificar a área geográfica
+    private static boolean correspondeAreaAdministrativa(Propriedade prop, String tipoArea, String valorArea) {
+        return switch (tipoArea.toLowerCase()) {
+            case "ilha" -> prop.getIlha().equalsIgnoreCase(valorArea);
+            case "municipio" -> prop.getMunicipio().equalsIgnoreCase(valorArea);
+            case "freguesia" -> prop.getFreguesia().equalsIgnoreCase(valorArea);
+            default -> false;
+        };
+    }
+
 }
