@@ -7,21 +7,6 @@ import org.locationtech.jts.io.WKTReader;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * JUnit test class for {@link GrafoPropriedades}.
- * <p>
- * Author: jxbarbosax
- * Date: 2023-10-10
- * </p>
- * <p>
- * Cyclomatic Complexity (CC) for each method:
- * <ul>
- *     <li>Constructor: CC = 1</li>
- *     <li>adicionarPropriedade: CC = 1</li>
- *     <li>construirGrafoAutomaticamente: CC = 2</li>
- *     <li>mostrarGrafo: CC = 1</li>
- * </ul>
- */
 class GrafoPropriedadesTest {
 
     @Test

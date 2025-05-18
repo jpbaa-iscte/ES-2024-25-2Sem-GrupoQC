@@ -9,23 +9,6 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * JUnit test class for {@link Propriedade}.
- * <p>
- * Author: jxbarbosax
- * Date: 2023-10-10
- * </p>
- * <p>
- * Cyclomatic Complexity (CC) for each method:
- * <ul>
- *     <li>Constructor: CC = 1</li>
- *     <li>getParId: CC = 1</li>
- *     <li>getGeometry: CC = 1</li>
- *     <li>adicionarVizinho: CC = 1</li>
- *     <li>getVizinhos: CC = 1</li>
- *     <li>toString: CC = 1</li>
- * </ul>
- */
 class PropriedadeTest {
 
     @Test

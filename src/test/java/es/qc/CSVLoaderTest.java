@@ -8,33 +8,14 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * JUnit test class for {@link CSVLoader}.
- * <p>
- * Author: jxbarbosax
- * Date: 2023-10-10
- * </p>
- * <p>
- * Cyclomatic Complexity (CC) for each method:
- * <ul>
- *     <li>Constructor: CC = 1</li>
- *     <li>carregarPropriedades: CC = 3</li>
- * </ul>
- */
 class CSVLoaderTest {
 //teste
-    /**
-     * Test for the constructor of {@link CSVLoader}.
-     */
+
     @Test
     void constructor() {
         assertDoesNotThrow(() -> new CSVLoader(), "The constructor should not throw any exceptions.");
     }
 
-    /**
-     * Test for {@link CSVLoader#carregarPropriedades(String)} - Path 1.
-     * Valid CSV file with data.
-     */
     @Test
     void carregarPropriedades1() throws Exception  {
         URL resource = getClass().getClassLoader().getResource("Madeira-Moodle-1.1.csv");
@@ -49,10 +30,6 @@ class CSVLoaderTest {
         assertFalse(propriedades.isEmpty(), "Returned map should not be empty.");
     }
 
-    /**
-     * Test for {@link CSVLoader#carregarPropriedades(String)} - Path 2.
-     * Empty CSV file.
-     */
     @Test
     void carregarPropriedades2() throws Exception{
         URL resource = getClass().getClassLoader().getResource("empty.csv");
@@ -67,10 +44,6 @@ class CSVLoaderTest {
         assertTrue(propriedades.isEmpty(), "Returned map should be empty.");
     }
 
-    /**
-     * Test for {@link CSVLoader#carregarPropriedades(String)} - Path 3.
-     * Non-existent CSV file.
-     */
     @Test
     void carregarPropriedades3() {
         String nonExistentCSVPath = "nonexistent.csv"; // This file doesn't exist
