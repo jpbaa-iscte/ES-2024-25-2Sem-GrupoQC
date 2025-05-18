@@ -6,15 +6,8 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GeradorSugestoesTrocaTest {
+public class  GeradorSugestoesTrocaTest {
 
-    /**
-     * Monta um mapa de propriedades de teste:
-     *
-     * - p1 e p2 são adjacentes, donos diferentes, mas troca não gera ganho.
-     * - p3 e p4 são adjacentes, donos diferentes, e você poderá ajustar
-     *   a lógica futuramente para produzir ganho neste par.
-     */
     private Map<String, Propriedade> criarMapaTeste() {
         Map<String, Propriedade> mapa = new HashMap<>();
 
