@@ -6,16 +6,40 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Classe principal da aplicação que carrega os dados do ficheiro CSV,
+ * constrói os grafos de propriedades e de proprietários, e fornece
+ * um menu interativo para realizar operações como cálculo de áreas médias
+ * e sugestão de trocas de propriedades.
+ *
+ * <p>As funcionalidades incluem:
+ * <ul>
+ *   <li>Carregamento de propriedades a partir de um ficheiro CSV</li>
+ *   <li>Construção de grafos com base em vizinhança e donos das parcelas</li>
+ *   <li>Visualização dos grafos</li>
+ *   <li>Cálculo da área média por região</li>
+ *   <li>Cálculo da área média agrupando propriedades adjacentes do mesmo dono</li>
+ *   <li>Geração de sugestões de troca de propriedades</li>
+ * </ul>
+ *
+ * O caminho para o ficheiro CSV deve ser corretamente especificado na variável {@code caminhoCSV}.
+ */
 public class App {
+
+    /**
+     * Ponto de entrada principal da aplicação.
+     *
+     * @param args argumentos da linha de comandos (não utilizados)
+     */
     public static void main(String[] args) {
-        // Caminho do ficheiro CSV
+        // Caminho do ficheiro CSV contendo os dados das propriedades
         String caminhoCSV = "Madeira-Moodle-1.1.csv/Madeira-Moodle-1.1.csv";
 
         try {
-            // 1. Carrega as propriedades a partir do CSV
+            // 1. Carregamento dos dados
             Map<String, Propriedade> propriedades = CSVLoader.carregarPropriedades(caminhoCSV);
 
-            // 2. Constrói o grafo de propriedades (parcelas)
+            // 2. Construção do grafo de propriedades (parcelas)
             GrafoPropriedades grafoPropriedades = new GrafoPropriedades();
             for (Propriedade prop : propriedades.values()) {
                 grafoPropriedades.adicionarPropriedade(prop);
@@ -25,18 +49,17 @@ public class App {
             System.out.println("=== Grafo de Propriedades ===");
             grafoPropriedades.mostrarGrafo();
 
-            // 3. Constrói o grafo de proprietários com base nas relações entre parcelas
+            // 3. Construção do grafo de proprietários com base nas adjacências
             GrafoProprietarios grafoProprietarios = new GrafoProprietarios(grafoPropriedades);
-
             System.out.println("\n=== Grafo de Proprietários ===");
             grafoProprietarios.mostrarGrafo();
 
+            // 4. Visualização dos grafos (opcional)
             VisualizadorGrafoPropriedades.mostrar(grafoPropriedades);
-            VisualizadorGrafoProprietarios.mostrar(grafoProprietarios,grafoPropriedades);
+            VisualizadorGrafoProprietarios.mostrar(grafoProprietarios, grafoPropriedades);
 
-            // 4. Permitir calcular a área média das propriedades
+            // 5. Menu interativo
             Scanner scanner = new Scanner(System.in);
-
             while (true) {
                 System.out.println("\nEscolha uma opção:");
                 System.out.println("1 - Calcular área média por região (Ponto 4)");
@@ -52,6 +75,7 @@ public class App {
                     break;
                 }
 
+                // Input comum às opções 1 e 2
                 System.out.print("Digite o tipo de localização (municipio, freguesia, ilha): ");
                 String tipo = scanner.nextLine().trim();
                 System.out.print("Digite o nome da localização: ");
@@ -59,14 +83,17 @@ public class App {
 
                 switch (opcao) {
                     case "1" -> {
+                        // Cálculo simples da média das áreas por localização
                         double media = CalcularMedia.calcularAreaMediaPorLocalizacao(propriedades, localizacao, tipo);
                         System.out.printf("A área média das propriedades em %s (%s) é %.2f m²%n", localizacao, tipo, media);
                     }
                     case "2" -> {
+                        // Cálculo da média considerando agrupamento de propriedades adjacentes do mesmo dono
                         double mediaAgrupada = CalcularMedia.calcularAreaMediaAgrupada(propriedades, tipo, localizacao);
                         System.out.printf("A área média AGRUPADA (propriedades adjacentes do mesmo dono) em %s (%s) é %.2f m²%n", localizacao, tipo, mediaAgrupada);
                     }
                     case "3" -> {
+                        // Sugestão de trocas baseadas em área e proximidade (modelo simples)
                         List<SugestaoTroca> sugestoes = GeradorSugestoesTroca.sugerirTrocas(propriedades);
                         System.out.println("\n=== Sugestões de Trocas ===");
                         for (int i = 0; i < Math.min(10, sugestoes.size()); i++) {
@@ -74,6 +101,7 @@ public class App {
                         }
                     }
                     case "4" -> {
+                        // Sugestões mais realistas de troca com base em área agrupada, comprimento e vizinhança
                         System.out.println("A sugerir trocas de propriedades...");
                         List<TrocaSugerida> trocas = SugestorTrocas.sugerirTrocas(propriedades);
                         if (trocas.isEmpty()) {
