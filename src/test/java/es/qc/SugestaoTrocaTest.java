@@ -15,13 +15,19 @@ public class SugestaoTrocaTest {
 
         double ganho = 25.0;
         double diffArea = Math.abs(p1.getArea() - p2.getArea()); // 50.0
-        SugestaoTroca sugestao = new SugestaoTroca(p1, p2, ganho, diffArea);
+        double similaridade = 0.8;
+        double scoreFinal = 0.7 * ganho + 0.3 * similaridade;
+
+        SugestaoTroca sugestao = new SugestaoTroca(p1, p2, ganho, diffArea, similaridade, scoreFinal);
+
 
         // getters
         assertSame(p1, sugestao.getPropA());
         assertSame(p2, sugestao.getPropB());
         assertEquals(ganho, sugestao.getGanhoTotal(), 1e-6);
         assertEquals(diffArea, sugestao.getDiferencaArea(), 1e-6);
+        assertEquals(similaridade, sugestao.getSimilaridade(), 1e-6);
+        assertEquals(scoreFinal, sugestao.getScoreFinal(), 1e-6);
 
         String s = sugestao.toString();
 

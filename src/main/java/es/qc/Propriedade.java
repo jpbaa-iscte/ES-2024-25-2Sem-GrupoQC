@@ -19,10 +19,12 @@ public class Propriedade {
     private final String ilha;
     private final Set<String> vizinhos;
     private final Coordinate centroide;
+    private final double distanciaZonaUrbana;
+    private final double distanciaEstrada;
 
     public Propriedade(String parId, String parNum, double comprimento, double area,
                        String geometryWKT, Geometry geometry, String owner,
-                       String freguesia, String municipio, String ilha) {
+                       String freguesia, String municipio, String ilha, double distanciaZonaUrbana, double distanciaEstrada ) {
         this.parId = parId;
         this.parNum = parNum;
         this.comprimento = comprimento;
@@ -35,6 +37,8 @@ public class Propriedade {
         this.municipio = municipio;
         this.ilha = ilha;
         this.vizinhos = new HashSet<>();
+        this.distanciaZonaUrbana = distanciaZonaUrbana;
+        this.distanciaEstrada = distanciaEstrada;
     }
 
     public void setOwner(String novoDono) {
@@ -92,6 +96,13 @@ public class Propriedade {
 
     public Coordinate getCentroide() {
         return centroide;
+    }
+    public double getDistanciaZonaUrbana() {
+        return distanciaZonaUrbana;
+    }
+
+    public double getDistanciaEstrada() {
+        return distanciaEstrada;
     }
 
     @Override
