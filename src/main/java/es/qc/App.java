@@ -41,7 +41,8 @@ public class App {
                 System.out.println("\nEscolha uma opção:");
                 System.out.println("1 - Calcular área média por região (Ponto 4)");
                 System.out.println("2 - Calcular área média agrupada por região (Ponto 5)");
-                System.out.println("3 - Sugerir trocas entre propriedades");
+                System.out.println("3 - Sugerir trocas entre propriedades (Ponto 6)");
+                System.out.println("4 - Sugerir trocas entre propriedades (Ponto 7)");
                 System.out.println("0 - Sair");
                 System.out.print("Opção: ");
                 String opcao = scanner.nextLine().trim();
@@ -67,6 +68,16 @@ public class App {
                     System.out.println("\n=== Sugestões de Trocas ===");
                     for (int i = 0; i < Math.min(10, sugestoes.size()); i++) {
                         System.out.println((i + 1) + ". " + sugestoes.get(i));
+                    }
+                } else if (opcao.equals("4")) {
+                    System.out.println("A sugerir trocas de propriedades...");
+                    List<TrocaSugerida> trocas = SugestorTrocas.sugerirTrocas(propriedades);
+                    if (trocas.isEmpty()) {
+                        System.out.println("Nenhuma troca sugerida.");
+                    } else {
+                        for (TrocaSugerida troca : trocas) {
+                            System.out.println(troca);
+                        }
                     }
                 } else {
                     System.out.println("Opção inválida.");

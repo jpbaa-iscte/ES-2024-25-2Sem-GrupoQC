@@ -94,6 +94,10 @@ public class Propriedade {
         return centroide;
     }
 
+    public double getComprimento() {
+        return comprimento;
+    }
+
     @Override
     public String toString() {
         return "Parcela " + parId + " (" + municipio + " - " + freguesia + " - " + ilha +
