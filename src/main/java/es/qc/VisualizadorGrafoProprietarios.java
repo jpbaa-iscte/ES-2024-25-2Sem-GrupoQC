@@ -7,15 +7,30 @@ import org.locationtech.jts.geom.Coordinate;
 
 import java.util.*;
 
+/**
+ * Classe responsável por visualizar o grafo de proprietários de propriedades
+ * com base nas suas localizações geográficas e vizinhanças.
+ * <p>
+ * Utiliza a biblioteca GraphStream para renderizar o grafo.
+ */
 public class VisualizadorGrafoProprietarios {
 
+    /**
+     * Exibe visualmente um grafo onde cada nó representa uma propriedade e cada aresta representa
+     * uma relação de vizinhança entre propriedades de diferentes proprietários.
+     * <p>
+     * Os nós são posicionados com base nos centroides das geometrias das propriedades.
+     *
+     * @param grafoProprietarios Objeto que representa o grafo lógico de proprietários (não usado diretamente aqui, mas pode ser necessário para versões futuras).
+     * @param grafoPropriedades  Contém todas as propriedades e suas relações de vizinhança.
+     */
     public static void mostrar(GrafoProprietarios grafoProprietarios, GrafoPropriedades grafoPropriedades) {
         Graph graph = new SingleGraph("Mapa Cadastral de Proprietários");
 
         graph.setStrict(false);
         graph.setAutoCreate(true);
 
-        // Bounding box para normalizar coordenadas
+        // Cálculo do bounding box para normalizar as coordenadas
         double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
         double maxX = -Double.MAX_VALUE, maxY = -Double.MAX_VALUE;
 
@@ -32,7 +47,7 @@ public class VisualizadorGrafoProprietarios {
         double scaleX = 1000.0 / (maxX - minX);
         double scaleY = 1000.0 / (maxY - minY);
 
-        // Adiciona um nó por propriedade (com nome do owner como label)
+        // Criação dos nós com rótulo do proprietário
         for (Propriedade p : grafoPropriedades.getPropriedades().values()) {
             Coordinate c = p.getCentroide();
             if (c == null) continue;
@@ -48,7 +63,7 @@ public class VisualizadorGrafoProprietarios {
             node.setAttribute("ui.label", owner);
         }
 
-        // Arestas apenas entre propriedades de owners diferentes
+        // Criação das arestas entre propriedades de diferentes donos
         Set<String> arestasAdicionadas = new HashSet<>();
         Map<String, Propriedade> propriedades = grafoPropriedades.getPropriedades();
 
@@ -74,11 +89,12 @@ public class VisualizadorGrafoProprietarios {
             }
         }
 
-        // Estilo visual com labels visíveis
+        // Aplicação do estilo visual
         graph.setAttribute("ui.stylesheet",
                 "node { fill-color: green; size: 6px; text-size: 10; text-alignment: above; }" +
                         "edge { fill-color: gray; }");
 
+        // Exibição do grafo
         graph.display();
     }
 }
