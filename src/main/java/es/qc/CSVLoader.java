@@ -11,15 +11,37 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe utilitária responsável por carregar dados a partir de um arquivo CSV.
+ * <p>
+ * Cada linha do CSV contém informações acerca da propriedades como identificadores, medidas (comprimento e área),
+ * geometria WKT e metadados (dono, freguesia, município, ilha). A geometria é interpretada
+ * usando a biblioteca JTS (Java Topology Suite).
+ * <p>
+ * O CSV deve ter o seguinte formato, com colunas separadas por ponto e vírgula (;):
+ * <pre>
+ * (cabeçalho)
+ * (ignorado pela função)
+ * id;parId;parNum;comprimento;area;geometryWKT;owner;freguesia;municipio;ilha
+ * </pre>
+ */
 public class CSVLoader {
 
+    /**
+     * Carrega uma coleção de objetos {@link Propriedade} a partir de um arquivo CSV.
+     *
+     * @param caminhoCSV Caminho para o arquivo CSV contendo os dados das propriedades.
+     * @return Um {@code Map<String, Propriedade>} onde a chave é o {@code parId} e o valor é o objeto {@code Propriedade}.
+     * @throws IOException Se ocorrer um erro ao ler o arquivo.
+     * @throws ParseException A sua existência deve-se a outro contexto.
+     */
     public static Map<String, Propriedade> carregarPropriedades(String caminhoCSV) throws IOException, ParseException {
         Map<String, Propriedade> propriedades = new HashMap<>();
         GeometryFactory geometryFactory = new GeometryFactory();
         WKTReader reader = new WKTReader(geometryFactory);
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoCSV))) {
-            br.readLine(); // Pular cabeçalho
+            br.readLine(); // Pula o cabeçalho
             String linha;
 
             while ((linha = br.readLine()) != null) {
