@@ -57,30 +57,34 @@ public class App {
                 System.out.print("Digite o nome da localização: ");
                 String localizacao = scanner.nextLine().trim();
 
-                if (opcao.equals("1")) {
-                    double media = CalcularMedia.calcularAreaMediaPorLocalizacao(propriedades, localizacao, tipo);
-                    System.out.printf("A área média das propriedades em %s (%s) é %.2f m²%n", localizacao, tipo, media);
-                } else if (opcao.equals("2")) {
-                    double mediaAgrupada = CalcularMedia.calcularAreaMediaAgrupada(propriedades, tipo, localizacao);
-                    System.out.printf("A área média AGRUPADA (propriedades adjacentes do mesmo dono) em %s (%s) é %.2f m²%n", localizacao, tipo, mediaAgrupada);
-                } else if (opcao.equals("3")) {
-                    List<SugestaoTroca> sugestoes = GeradorSugestoesTroca.sugerirTrocas(propriedades);
-                    System.out.println("\n=== Sugestões de Trocas ===");
-                    for (int i = 0; i < Math.min(10, sugestoes.size()); i++) {
-                        System.out.println((i + 1) + ". " + sugestoes.get(i));
+                switch (opcao) {
+                    case "1" -> {
+                        double media = CalcularMedia.calcularAreaMediaPorLocalizacao(propriedades, localizacao, tipo);
+                        System.out.printf("A área média das propriedades em %s (%s) é %.2f m²%n", localizacao, tipo, media);
                     }
-                } else if (opcao.equals("4")) {
-                    System.out.println("A sugerir trocas de propriedades...");
-                    List<TrocaSugerida> trocas = SugestorTrocas.sugerirTrocas(propriedades);
-                    if (trocas.isEmpty()) {
-                        System.out.println("Nenhuma troca sugerida.");
-                    } else {
-                        for (TrocaSugerida troca : trocas) {
-                            System.out.println(troca);
+                    case "2" -> {
+                        double mediaAgrupada = CalcularMedia.calcularAreaMediaAgrupada(propriedades, tipo, localizacao);
+                        System.out.printf("A área média AGRUPADA (propriedades adjacentes do mesmo dono) em %s (%s) é %.2f m²%n", localizacao, tipo, mediaAgrupada);
+                    }
+                    case "3" -> {
+                        List<SugestaoTroca> sugestoes = GeradorSugestoesTroca.sugerirTrocas(propriedades);
+                        System.out.println("\n=== Sugestões de Trocas ===");
+                        for (int i = 0; i < Math.min(10, sugestoes.size()); i++) {
+                            System.out.println((i + 1) + ". " + sugestoes.get(i));
                         }
                     }
-                } else {
-                    System.out.println("Opção inválida.");
+                    case "4" -> {
+                        System.out.println("A sugerir trocas de propriedades...");
+                        List<TrocaSugerida> trocas = SugestorTrocas.sugerirTrocas(propriedades);
+                        if (trocas.isEmpty()) {
+                            System.out.println("Nenhuma troca sugerida.");
+                        } else {
+                            for (TrocaSugerida troca : trocas) {
+                                System.out.println(troca);
+                            }
+                        }
+                    }
+                    default -> System.out.println("Opção inválida.");
                 }
             }
 

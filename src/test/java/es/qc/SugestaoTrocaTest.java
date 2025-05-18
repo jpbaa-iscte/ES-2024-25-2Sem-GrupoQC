@@ -18,7 +18,7 @@ public class SugestaoTrocaTest {
         double similaridade = 0.8;
         double scoreFinal = 0.7 * ganho + 0.3 * similaridade;
 
-        SugestaoTroca sugestao = new SugestaoTroca(p1, p2, ganho, diffArea, similaridade, scoreFinal);
+        SugestaoTroca sugestao = new SugestaoTroca(p1, p2, ganho, diffArea);
 
 
         // getters
@@ -26,8 +26,6 @@ public class SugestaoTrocaTest {
         assertSame(p2, sugestao.getPropB());
         assertEquals(ganho, sugestao.getGanhoTotal(), 1e-6);
         assertEquals(diffArea, sugestao.getDiferencaArea(), 1e-6);
-        assertEquals(similaridade, sugestao.getSimilaridade(), 1e-6);
-        assertEquals(scoreFinal, sugestao.getScoreFinal(), 1e-6);
 
         String s = sugestao.toString();
 
